@@ -1,0 +1,7 @@
+-c --cpu Cortex-M3 -D__RTX -g -O0 --apcs=interwork -I ..\CMSIS -I ..\FWlib\inc -I ..\USER
+-I "F:\my project\AirClearDev\backup\rev1.1\UVAirCleanDev\USER\RTE"
+-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
+-I D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\RTOS\RTX\INC
+-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include
+-D__UVISION_VERSION="518" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD
+-o ..\output\stm32f10x_adc.o --omf_browse ..\output\stm32f10x_adc.crf --depend ..\output\stm32f10x_adc.d "..\FWlib\src\stm32f10x_adc.c"

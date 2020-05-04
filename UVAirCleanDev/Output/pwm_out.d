@@ -1,0 +1,14 @@
+..\output\pwm_out.o: pwm_out.c
+..\output\pwm_out.o: pwm_output.h
+..\output\pwm_out.o: ..\CMSIS\stm32f10x.h
+..\output\pwm_out.o: ..\CMSIS\core_cm3.h
+..\output\pwm_out.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\pwm_out.o: ..\CMSIS\system_stm32f10x.h
+..\output\pwm_out.o: ..\USER\stm32f10x_conf.h
+..\output\pwm_out.o: ..\FWlib\inc\stm32f10x_exti.h
+..\output\pwm_out.o: ..\CMSIS\stm32f10x.h
+..\output\pwm_out.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\pwm_out.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\pwm_out.o: ..\FWlib\inc\misc.h
+..\output\pwm_out.o: ..\FWlib\inc\stm32f10x_tim.h
+..\output\pwm_out.o: uvdev.h

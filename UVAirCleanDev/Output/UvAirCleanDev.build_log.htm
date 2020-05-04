@@ -1,0 +1,103 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.18.0.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: YANG XIFAN, UEC, LIC=8MZ45-GYF66-PFQIX-H6R75-J9CMB-IVGEQ
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.18
+Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 1 (build 61)
+Assembler:       Armasm.exe V5.06 update 1 (build 61)
+Linker/Locator:  ArmLink.exe V5.06 update 1 (build 61)
+Library Manager: ArmAr.exe V5.06 update 1 (build 61)
+Hex Converter:   FromElf.exe V5.06 update 1 (build 61)
+CPU DLL:         SARMCM3.DLL V5.18
+Dialog DLL:      DARMSTM.DLL V1.65.0.0
+Target DLL:      Segger\JL2CM3.dll V2.99.18.0
+Dialog DLL:      TARMSTM.DLL V1.64.0.0
+ 
+<h2>Project:</h2>
+F:\my project\AirClearDev\backup\rev1.1\UVAirCleanDev\USER\STM32-DEMO.uvprojx
+Project File Date:  04/21/2020
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 1 (build 61)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'KEY-DEMO'
+assembling startup_stm32f10x_hd.s...
+compiling main.c...
+main.c(507): warning:  #550-D: variable "cnt" was set but never used
+        unsigned char cnt, cnt1, workmode, state;
+main.c(507): warning:  #550-D: variable "cnt1" was set but never used
+        unsigned char cnt, cnt1, workmode, state;
+main.c(507): warning:  #550-D: variable "state" was set but never used
+        unsigned char cnt, cnt1, workmode, state;
+main.c(1268): warning:  #177-D: variable "NVIC_InitStructure" was declared but never referenced
+        NVIC_InitTypeDef NVIC_InitStructure;
+main.c(1269): warning:  #177-D: variable "EXTI_InitStructure" was declared but never referenced
+        EXTI_InitTypeDef EXTI_InitStructure;
+main.c: 5 warnings, 0 errors
+compiling led.c...
+compiling key.c...
+compiling pwm_out.c...
+compiling adc.c...
+compiling timer3.c...
+compiling stm32f10x_gpio.c...
+compiling stm32f10x_rcc.c...
+compiling misc.c...
+compiling stm32f10x_tim.c...
+compiling stm32f10x_adc.c...
+compiling stm32f10x_dma.c...
+compiling stm32f10x_exti.c...
+compiling stm32f10x_flash.c...
+compiling core_cm3.c...
+compiling system_stm32f10x.c...
+compiling RTX_Conf_CM.c...
+linking...
+Program Size: Code=19560 RO-data=756 RW-data=168 ZI-data=5608  
+FromELF: creating hex file...
+"..\Output\UvAirCleanDev.axf" - 0 Error(s), 5 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
+                ARM::CMSIS:CORE:4.3.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 4.3.0
+   * Component: RTOS Version: 1.0
+   * Component: Keil RTX Version: 4.80.0
+
+<h2>Collection of Component include folders:</h2>
+  F:\my project\AirClearDev\backup\rev1.1\UVAirCleanDev\USER\RTE
+  D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
+  D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\RTOS\RTX\INC
+  D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:4.3.0
+
+   * Component: ::CMSIS:RTOS:1.0 (API)
+
+   * Component: ARM::CMSIS:RTOS:Keil RTX:4.80.0
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
+      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
+      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
+      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
+Build Time Elapsed:  00:00:11
+</pre>
+</body>
+</html>

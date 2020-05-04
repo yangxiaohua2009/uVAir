@@ -1,0 +1,7 @@
+--cpu Cortex-M3 --pd "__RTX SETA 1" -g --apcs=interwork 
+-I.\RTE\_KEY-DEMO
+-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include
+-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\RTOS\RTX\INC
+-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include
+--pd "__UVISION_VERSION SETA 525" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"
+--list ..\listing\startup_stm32f10x_hd.lst --xref -o .\startup_stm32f10x_hd.o --depend .\startup_stm32f10x_hd.d "..\CMSIS\startup\startup_stm32f10x_hd.s"
