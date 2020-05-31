@@ -29,15 +29,15 @@ Project File Date:  04/21/2020
 Rebuild target 'KEY-DEMO'
 assembling startup_stm32f10x_hd.s...
 compiling main.c...
-main.c(507): warning:  #550-D: variable "cnt" was set but never used
+main.c(493): warning:  #177-D: variable "startv" was declared but never referenced
+        unsigned startv = 55000;
+main.c(575): warning:  #550-D: variable "cnt" was set but never used
         unsigned char cnt, cnt1, workmode, state;
-main.c(507): warning:  #550-D: variable "cnt1" was set but never used
+main.c(575): warning:  #550-D: variable "cnt1" was set but never used
         unsigned char cnt, cnt1, workmode, state;
-main.c(507): warning:  #550-D: variable "state" was set but never used
-        unsigned char cnt, cnt1, workmode, state;
-main.c(1268): warning:  #177-D: variable "NVIC_InitStructure" was declared but never referenced
+main.c(1448): warning:  #177-D: variable "NVIC_InitStructure" was declared but never referenced
         NVIC_InitTypeDef NVIC_InitStructure;
-main.c(1269): warning:  #177-D: variable "EXTI_InitStructure" was declared but never referenced
+main.c(1449): warning:  #177-D: variable "EXTI_InitStructure" was declared but never referenced
         EXTI_InitTypeDef EXTI_InitStructure;
 main.c: 5 warnings, 0 errors
 compiling led.c...
@@ -57,7 +57,7 @@ compiling core_cm3.c...
 compiling system_stm32f10x.c...
 compiling RTX_Conf_CM.c...
 linking...
-Program Size: Code=19560 RO-data=756 RW-data=168 ZI-data=5608  
+Program Size: Code=20308 RO-data=756 RW-data=168 ZI-data=8584  
 FromELF: creating hex file...
 "..\Output\UvAirCleanDev.axf" - 0 Error(s), 5 Warning(s).
 
@@ -65,11 +65,11 @@ FromELF: creating hex file...
 
 Package Vendor: ARM
                 http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
-                ARM::CMSIS:CORE:4.3.0
+                ARM::CMSIS:RTOS:Keil RTX:4.80.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: Keil RTX Version: 4.80.0
    * Component: CORE Version: 4.3.0
    * Component: RTOS Version: 1.0
-   * Component: Keil RTX Version: 4.80.0
 
 <h2>Collection of Component include folders:</h2>
   F:\my project\AirClearDev\backup\rev1.1\UVAirCleanDev\USER\RTE
@@ -79,25 +79,25 @@ Package Vendor: ARM
 
 <h2>Collection of Component Files used:</h2>
 
+   * Component: ARM::CMSIS:RTOS:Keil RTX:4.80.0
+      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
+      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
+      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
+      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
+      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
+
    * Component: ARM::CMSIS:CORE:4.3.0
 
    * Component: ::CMSIS:RTOS:1.0 (API)
-
-   * Component: ARM::CMSIS:RTOS:Keil RTX:4.80.0
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
-      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
-      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
-      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
-      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
-      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-Build Time Elapsed:  00:00:11
+Build Time Elapsed:  00:00:10
 </pre>
 </body>
 </html>

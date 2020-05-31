@@ -84,6 +84,10 @@ void perform(unsigned char state)
 					message_buzzer->canData[0] = uv_private.work_mode;    
 					osMessagePut(task_buzzer_quenue, (uint32_t)message_buzzer, 0);	
 					osSignalWait(1, osWaitForever);
+					osPoolFree(task_buzzer_pool, message_buzzer);
+					osPoolFree(task_air_pool, message_air);	
+					osPoolFree(task_uv_pool, message_uv);
+					osPoolFree(task_lamp_pool, message_lamp);	
 				break;
 			case WORK_MODE_UVAIR:
 					message_buzzer->canData[0] = uv_private.work_mode; 
@@ -92,20 +96,20 @@ void perform(unsigned char state)
 					osSignalWait(1, osWaitForever);
 					osPoolFree(task_buzzer_pool, message_buzzer);
 			
-					if(uv_private.fan_state == STOP_STATE) {
+					//if(uv_private.fan_state == STOP_STATE) {
 						message_air->canData[0] = uv_private.work_mode; 
 						message_air->canData[1] = state;
 						osMessagePut(task_air_quenue, (uint32_t)message_air, 0);	
 						osSignalWait(1, osWaitForever);	
 						osPoolFree(task_air_pool, message_air);	
-					}	
-					if(uv_private.uv_state == STOP_STATE) {					
+					//}	
+					//if(uv_private.uv_state == STOP_STATE) {	
 						message_uv->canData[0] = uv_private.work_mode; 
 						message_uv->canData[1] = state;
 						osMessagePut(task_uv_quenue, (uint32_t)message_uv, 0);	
 						osSignalWait(1, osWaitForever);
 						osPoolFree(task_uv_pool, message_uv);	
-					}
+					//}
 					message_lamp->canData[0] = uv_private.work_mode; 
 					message_lamp->canData[1] = uv_private.led_light_mode;
 					message_lamp->canData[2] = uv_private.lightness;
@@ -120,13 +124,13 @@ void perform(unsigned char state)
 					osSignalWait(1, osWaitForever);
 					osPoolFree(task_buzzer_pool, message_buzzer);	
 			
-					if(uv_private.fan_state == STOP_STATE) {
+					//if(uv_private.fan_state == STOP_STATE) {
 						message_air->canData[0] = uv_private.work_mode; 
 						message_air->canData[1] = state;
 						osMessagePut(task_air_quenue, (uint32_t)message_air, 0);	
 						osSignalWait(1, osWaitForever);	
 						osPoolFree(task_air_pool, message_air);								
-					}				
+					//}				
 					message_uv->canData[0] = uv_private.work_mode; 
 					message_uv->canData[1] = STOP_STATE;
 					osMessagePut(task_uv_quenue, (uint32_t)message_uv, 0);	
@@ -153,13 +157,13 @@ void perform(unsigned char state)
 					osSignalWait(1, osWaitForever);		
 					osPoolFree(task_air_pool, message_air);	
 			
-					if(uv_private.uv_state == STOP_STATE) {					
+					//if(uv_private.uv_state == STOP_STATE) {					
 						message_uv->canData[0] = uv_private.work_mode; 
 						message_uv->canData[1] = state;
 						osMessagePut(task_uv_quenue, (uint32_t)message_uv, 0);	
 						osSignalWait(1, osWaitForever);
 						osPoolFree(task_uv_pool, message_uv);							
-					}
+					//}
 					message_lamp->canData[0] = uv_private.work_mode; 
 					message_lamp->canData[1] = uv_private.led_light_mode;
 					message_lamp->canData[2] = uv_private.lightness;
@@ -172,18 +176,21 @@ void perform(unsigned char state)
 					message_buzzer->canData[0] = uv_private.work_mode; 
 					message_buzzer->canData[1] = state;
 					osMessagePut(task_buzzer_quenue, (uint32_t)message_buzzer, 0);
-					osSignalWait(1, osWaitForever);				
+					osSignalWait(1, osWaitForever);			
+					osPoolFree(task_buzzer_pool, message_buzzer);	
 					message_lamp->canData[0] = uv_private.work_mode; 
 					message_lamp->canData[1] = uv_private.led_light_mode;
 					message_lamp->canData[2] = uv_private.lightness;
 					osMessagePut(task_lamp_quenue, (uint32_t)message_lamp, 0);	
 					osSignalWait(1, osWaitForever);
-					osPoolFree(task_lamp_pool, message_lamp);	
+					osPoolFree(task_lamp_pool, message_lamp);
+			osPoolFree(task_uv_pool, message_uv);							
+			osPoolFree(task_air_pool, message_air);	
 				break;
 			default:
 				break;
 		}
-	
+	osPoolFree(task_buzzer_pool, message_buzzer);
 }
 void timer_callback(void const *param)
 {
@@ -197,10 +204,29 @@ void switch_wtime_or_lightness(void)
 	switch(uv_private.work_mode & 0x0f)
 	{
 		case WORK_MODE_IDLE:	//开机巡检模式
-			uv_private.work_time = TIME_IDLE;
+			//uv_private.work_time = TIME_IDLE;
+			break;
+		case WORK_MODE_AIR: //通风净化
+			switch(uv_private.fan_target_speed)
+			{
+				case FAN_SPEED_HIGH:
+					uv_private.fan_target_speed = FAN_SPEED_MID;
+					break;
+				case FAN_SPEED_MID:
+					uv_private.fan_target_speed = FAN_SPEED_SLOW;
+					break;
+				case FAN_SPEED_SLOW:
+					uv_private.fan_target_speed = FAN_IDLE;
+					break;
+				case FAN_IDLE:
+					uv_private.fan_target_speed = FAN_SPEED_HIGH;
+					break;					
+				default:
+					uv_private.fan_target_speed = FAN_SPEED_SLOW;
+					break;					
+			}
 			break;
 		case WORK_MODE_UVAIR: //紫外消杀
-		case WORK_MODE_AIR: //通风净化
 		case WORK_MODE_UV: //紫外直照
 			switch(uv_private.work_time) 
 			{
@@ -214,7 +240,7 @@ void switch_wtime_or_lightness(void)
 					uv_private.work_time = TIME_FOREVER;
 					break;
 				case TIME_FOREVER:		//一直工作
-					uv_private.work_time = TIME_15MIN;
+					uv_private.work_time = TIME_IDLE;
 					break;
 				default:
 					uv_private.work_time = TIME_IDLE;
@@ -264,7 +290,7 @@ void switch_workmode(void)
 			uv_private.work_mode =  (uv_private.led_light_mode | WORK_MODE_AIR); //跳转到通风净化模式
 			break;
 		case WORK_MODE_AIR:   //通风净化
-			uv_private.work_mode = 	 (uv_private.led_light_mode | WORK_MODE_UV); //跳转到紫外直照
+			uv_private.work_mode = 	 (uv_private.led_light_mode | WORK_MODE_LAMP); //跳转到紫外直照
 			break;
 		case WORK_MODE_UV:   //紫外直照
 			/*
@@ -287,53 +313,62 @@ void switch_workmode(void)
 }
 void task_bat_monitor(void const *argument)
 {
-	u32 AD_value;	
+	u32 AD_value_b[40], index, AD_value;	
 	for(;;)
 	{
-		 AD_value  = 3000000/4096*ADC_ConvertedValue/1000;
-		if(AD_value >= 0xB20) {
+		for(index =0; index<40; index++) {
+		 AD_value_b[index]  = 2 * 3000*ADC_ConvertedValue/4096;
+		 //osDelay(2 * MS_FRAC);
+		}
+		AD_value = 0;
+		for(index =0; index<40; index++) {
+		 AD_value += AD_value_b[index];
+		}	
+		AD_value	/= 40;	
+		AD_value += 160;
+		if(AD_value >= 0xfa0) {
 			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT3_BANK, BAT3, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT4_BANK, BAT4, (BitAction)(LED_ON));
 		}
-		if(AD_value > 0xAA0 && AD_value < 0xB20) {
+		if(AD_value > 0xed8 && AD_value < 0xfa0) {
+			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_ON));
+			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_ON));
+			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_ON));
+			GPIO_WriteBit(BAT3_BANK, BAT3, (BitAction)(LED_ON));
+			GPIO_WriteBit(BAT4_BANK, BAT4, (BitAction)(LED_ON));
+		}	
+		if(AD_value >= 0xe10 && AD_value < 0xed8) {
 			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT3_BANK, BAT3, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT4_BANK, BAT4, (BitAction)(LED_OFF));
 		}	
-		if(AD_value >= 0xA20 && AD_value < 0xAA0) {
+		if(AD_value >= 0xd48 && AD_value < 0xe10) {
 			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT3_BANK, BAT3, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT4_BANK, BAT4, (BitAction)(LED_OFF));
-		}	
-		if(AD_value >= 0x990 && AD_value < 0xA20) {
+		}		
+		if(AD_value >= 0xc80 && AD_value < 0xd48) {
 			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT3_BANK, BAT3, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT4_BANK, BAT4, (BitAction)(LED_OFF));
-		}		
-		if(AD_value >= 0x910 && AD_value < 0x990) {
+		}	
+		if(AD_value >= 0xbb8 && AD_value < 0xc80) {
 			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_ON));
 			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT3_BANK, BAT3, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT4_BANK, BAT4, (BitAction)(LED_OFF));
-		}	
-		if(AD_value >= 0x880 && AD_value < 0x910) {
-			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_OFF));
-			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_OFF));
-			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_OFF));
-			GPIO_WriteBit(BAT3_BANK, BAT3, (BitAction)(LED_OFF));
-			GPIO_WriteBit(BAT4_BANK, BAT4, (BitAction)(LED_OFF));
 		}		
-		if(AD_value < 0x880) {
+		if(AD_value < 0xbb8) {
 			GPIO_WriteBit(BAT0_BANK, BAT0, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT1_BANK, BAT1, (BitAction)(LED_OFF));
 			GPIO_WriteBit(BAT2_BANK, BAT2, (BitAction)(LED_OFF));
@@ -397,6 +432,7 @@ osThreadDef(task_lamp, osPriorityBelowNormal, 1, 0);
 void task_uv(void const *argument)
 {
 	unsigned char modetmp, statetmp;
+	unsigned int timercnt;
 	message_t *message_uv;
 	message_t *message;
 	message_uv = (message_t*)osPoolAlloc(task_uv_pool);	
@@ -407,6 +443,7 @@ void task_uv(void const *argument)
 			message = (message_t*)task_uv_evt.value.p;
 			modetmp = (uint32_t)message->canData[0] & 0x0f;
 			statetmp = (uint32_t)message->canData[1];
+			timercnt = 0;
 			osSignalSet(task_dispatcher_id, 1);
 			osPoolFree(task_uv_pool, message_uv);		
 		}	
@@ -422,7 +459,15 @@ void task_uv(void const *argument)
 				}
 				else {
 					if(statetmp == RUN_STATE) {
-						GPIO_WriteBit(UVLAMP_CONTROL_BANK, UVLAMP_CONTROL, (BitAction)(UV_ON));
+						if(timercnt == 300) {
+							GPIO_WriteBit(UVLAMP_CONTROL_BANK, UVLAMP_CONTROL, (BitAction)(UV_ON));
+							timercnt = 301;
+						}
+						else {
+							if(timercnt != 301) {
+								timercnt++;
+							}
+						}
 					}
 					else {
 						GPIO_WriteBit(UVLAMP_CONTROL_BANK, UVLAMP_CONTROL, (BitAction)(UV_OFF));
@@ -458,7 +503,8 @@ void task_air(void const *argument)
 			statetmp = (uint32_t)message->canData[1];
 			run = 0;
 			if(statetmp == RUN_STATE) {
-				startv = 55000;
+				//startv = 55000;
+				//uv_private.fan_cur_speed = 55000;
 			}
 			osSignalSet(task_dispatcher_id, 1);
 			osPoolFree(task_air_pool, message_air);		
@@ -474,22 +520,44 @@ void task_air(void const *argument)
 					if(run == 0) {
 						TM1_PWM1_FAN_ENABLE(POWER_ON);
 						run = 1;
+						TIM1->CCR1 = uv_private.fan_cur_speed;
 					}
 					else {
-						if(startv >0) {
-							TIM1->CCR1 = startv;
-							startv-=500;
+						if(uv_private.fan_cur_speed >uv_private.fan_target_speed) {			
+							uv_private.fan_cur_speed-=500;
 						}
+						else {
+							if(uv_private.fan_cur_speed <uv_private.fan_target_speed) {			
+								uv_private.fan_cur_speed+=500;
+							}
+						}
+						TM1_PWM1_FAN_ENABLE(POWER_ON);
+						TIM1->CCR1 = uv_private.fan_cur_speed;
 					}
 				}
 				else {
 					if(run == 0) {
-						TIM1->CCR1 = startv;
-						startv+=500;
-						if(startv == 55000) {
-							run = 1;	
-							TM1_PWM1_FAN_ENABLE(POWER_OFF);
-						}
+						TM1_PWM1_FAN_ENABLE(POWER_ON);
+						TIM1->CCR1 = uv_private.fan_cur_speed; //startv;
+						run = 1;
+						uv_private.fan_cur_speed+=500;
+					}
+					else {
+								if(run==1) {
+									//TM1_PWM1_FAN_ENABLE(POWER_ON);
+									TIM1->CCR1 =  uv_private.fan_cur_speed;
+									if(uv_private.fan_cur_speed > 64000) {
+										uv_private.fan_cur_speed-=500;
+									}
+									else {
+										uv_private.fan_cur_speed+=500;
+									}
+									//uv_private.fan_cur_speed+=500;
+									if( uv_private.fan_cur_speed >= 64000) {	
+										//TM1_PWM1_FAN_ENABLE(POWER_OFF);
+										run = 2;
+									}					
+								}
 					}
 				}
 			default:
@@ -594,13 +662,24 @@ void task_buzzer(void const *argument)
 					}
 					#endif
 					//TM3_PWM3_BEEP_ENABLE(POWER_ON);
-					uv_private.beep_freq = 500;
-					uv_private.beep_cnt = 150;
-					uv_private.beep_interval1 = 65000;
-					uv_private.beep_interval2 = 40000;
-					uv_private.beep_times1 = 120;
-					uv_private.beep_times2 = 60;
-					TIM2_Configuration(500);
+					if(state == RUN_STATE) {
+						uv_private.beep_freq = 500;
+						uv_private.beep_cnt = 150;
+						uv_private.beep_interval1 = 65000;
+						uv_private.beep_interval2 = 40000;
+						uv_private.beep_times1 = 120;
+						uv_private.beep_times2 = 60;
+						TIM2_Configuration(500);
+					}
+					else {
+						uv_private.beep_freq = 500;
+						uv_private.beep_cnt = 500;
+						uv_private.beep_interval1 = 10000;
+						uv_private.beep_interval2 = 5000;
+						uv_private.beep_times1 = 0;
+						uv_private.beep_times2 = 0;
+						TIM2_Configuration(500);						
+					}
 					START_TIME;	
 					break;	
 				case WORK_MODE_AIR: //idle mode
@@ -692,7 +771,7 @@ osThreadDef(task_buzzer, osPriorityNormal, 1, 0);
 void task_dispatcher(void const *argument)
 {
 	unsigned char button_type, cnt, para, status, old_mode_status, old_status;
-	unsigned char run;
+	unsigned char run, workornot, stopcnt;
 	unsigned int delaytime;
 	message_t *message_dispatcher;
 	message_t *message;
@@ -715,6 +794,7 @@ void task_dispatcher(void const *argument)
 			message = (message_t*)task_dispatcher_evt.value.p;
 			button_type = (uint32_t)message->canData[0];
 			osSignalSet(task_button_id, 1);
+			stopcnt =0;
 			switch(button_type)
 			{
 				case 0:     //power on just now
@@ -791,6 +871,7 @@ void task_dispatcher(void const *argument)
 			run = 0;
 			osPoolFree(task_dispatcher_pool, message_dispatcher);
 		}
+		
 		switch(button_type)
 		{
 			case 0: //idle mode					
@@ -808,9 +889,35 @@ void task_dispatcher(void const *argument)
 				//osDelay(40 * MS_FRAC);
 				break;
 			case 2: //idle mode
+						switch(uv_private.work_mode & 0x0f) {
+							case WORK_MODE_IDLE:   //开机巡检模式
+								workornot = 0;
+								break;
+							case WORK_MODE_UVAIR:   //紫外消杀
+								if(uv_private.work_time == TIME_IDLE) workornot =0;
+								else workornot = 1;
+								break;
+							case WORK_MODE_AIR:   //通风净化
+								if(uv_private.fan_target_speed == FAN_IDLE) workornot =0;
+								else workornot = 1;
+								break;
+							case WORK_MODE_UV:   //紫外直照
+								if(uv_private.work_time == TIME_IDLE) workornot =0;
+								else workornot = 1;
+								break;		
+							case WORK_MODE_LAMP:   //台灯
+								if(uv_private.led_light_mode == 0) workornot =0;
+								else workornot = 1;
+								break;	
+							default:
+								workornot = 0;
+								break;	
+						}	
+				if(workornot) {
 				LED_Round_robin_blink(MODE_LED_NUM, LED_STATUS_NUM, old_status);
 				if(cnt < LED_BLINK_CNT) {
-					if(cnt == 0) perform(STOP_STATE);
+					//if(cnt == 0) perform(STOP_STATE);
+					if(cnt == 0) perform(RUN_STATE);
 					LED_Round_robin_blink(0, MODE_LED_NUM, status);
 					status = ~status;
 					cnt++;
@@ -822,7 +929,7 @@ void task_dispatcher(void const *argument)
 						*	TO-DO, send to signal to other task
 						*/
 						run = 1;	
-						perform(RUN_STATE);
+						//perform(RUN_STATE);
 						GPIO_WriteBit(POWERMODE_CONTROL_BANK, POWERMODE_CONTROL, (BitAction)(POWER_ON));
 						switch(uv_private.work_mode & 0x0f) {
 							case WORK_MODE_IDLE:   //开机巡检模式
@@ -928,10 +1035,45 @@ void task_dispatcher(void const *argument)
 						}
 					}
 				}
+				}
+				else {
+										if(stopcnt == 0) {
+											perform(STOP_STATE);
+											uv_private.fan_state = STOP_STATE;
+											uv_private.uv_state	= STOP_STATE;	
+											stopcnt = 1;
+										}											
+				}
 				break;
 			case 1: //idle mode
+										switch(uv_private.work_mode & 0x0f) {
+							case WORK_MODE_IDLE:   //开机巡检模式
+								workornot = 0;
+								break;
+							case WORK_MODE_UVAIR:   //紫外消杀
+								if(uv_private.work_time == TIME_IDLE) workornot =0;
+								else workornot = 1;
+								break;
+							case WORK_MODE_AIR:   //通风净化
+								if(uv_private.fan_target_speed == FAN_IDLE) workornot =0;
+								else workornot = 1;
+								break;
+							case WORK_MODE_UV:   //紫外直照
+								if(uv_private.work_time == TIME_IDLE) workornot =0;
+								else workornot = 1;
+								break;		
+							case WORK_MODE_LAMP:   //台灯
+								if(uv_private.led_light_mode == 0) workornot =0;
+								else workornot = 1;
+								break;	
+							default:
+								workornot = 0;
+								break;	
+						}	
+				if(workornot ==1) {
 				LED_Round_robin_blink(0, MODE_LED_NUM, old_mode_status);
 				if(cnt < LED_BLINK_CNT) {
+					if(cnt == 0) perform(RUN_STATE);
 					LED_Round_robin_blink(MODE_LED_NUM, LED_STATUS_NUM, status);
 					status = ~status;
 					cnt++;
@@ -944,7 +1086,7 @@ void task_dispatcher(void const *argument)
 						*/
 						run = 1;
 								
-						perform(RUN_STATE);
+						//perform(RUN_STATE);
 						GPIO_WriteBit(POWERMODE_CONTROL_BANK, POWERMODE_CONTROL, (BitAction)(POWER_ON));
 						switch(uv_private.work_mode & 0x0f) {
 							case WORK_MODE_IDLE:   //开机巡检模式
@@ -972,7 +1114,28 @@ void task_dispatcher(void const *argument)
 								break;	
 							default:
 								break;	
-						}							
+						}	
+						#if 1
+						if((uv_private.work_mode & 0x0f) != WORK_MODE_LAMP) {
+							switch(uv_private.work_time)
+							{
+								case TIME_IDLE:
+									delaytime = 0;
+									break;
+								case TIME_15MIN:
+									delaytime = 15 * 60 * 20;
+									break;								
+								case TIME_30MIN:
+									delaytime = 30 * 60 * 20;
+									break;
+								case TIME_FOREVER:
+									delaytime = 0;
+									break;								
+								default:
+									break;
+							}
+						}
+					#endif						
 						#if 0
 						if((uv_private.work_mode & 0x0f) != WORK_MODE_LAMP) {
 							switch(uv_private.work_time)
@@ -995,7 +1158,7 @@ void task_dispatcher(void const *argument)
 					#endif
 					}
 					else {
-						if((uv_private.work_mode & 0x0f) != WORK_MODE_LAMP) {
+						if(((uv_private.work_mode & 0x0f) != WORK_MODE_LAMP) && ((uv_private.work_mode & 0x0f) != WORK_MODE_IDLE)) {
 							switch(uv_private.work_time)
 							{
 								case TIME_IDLE:
@@ -1048,6 +1211,15 @@ void task_dispatcher(void const *argument)
 						}						
 					}
 				}			
+			}
+				else {
+									if(stopcnt == 0) {
+										stopcnt = 1;
+										perform(STOP_STATE);
+										uv_private.fan_state = STOP_STATE;
+										uv_private.uv_state	= STOP_STATE;		
+									}										
+				}
 				break;
 			default:
 				break;
@@ -1125,6 +1297,7 @@ void task_button(void const *argument)
 							GPIO_WriteBit(POWERMODE_CONTROL_BANK, POWERMODE_CONTROL, (BitAction)(POWER_OFF));
 							GPIO_WriteBit(FAN_PWR_BANK, FAN_PWR, (BitAction)(POWER_OFF));
 							uv_private.power_status = POWER_ON;
+							uv_private.work_mode = WORK_MODE_IDLE;
 							/*
 							*	TO-DO
 							* send signal to task_dispatcher
@@ -1164,7 +1337,7 @@ void task_button(void const *argument)
 							if(GPIO_ReadInputDataBit(WAKEUP_BANK,WAKEUP_BUTTEON) == KEY_OFF ) {
 								button_up_cnt++;
 								osDelay(2 * MS_FRAC);
-								if(button_up_cnt>1000) {  //the time is longer than 2S, so there isn't double pushed event
+								if(button_up_cnt>500) {  //the time is longer than 1S, so there isn't double pushed event
 									break;
 								}
 							}
@@ -1174,18 +1347,22 @@ void task_button(void const *argument)
 								break;
 							}
 					}
-					//waiting for the button released
-					if(double_button ==2) {
-						while(GPIO_ReadInputDataBit(WAKEUP_BANK,WAKEUP_BUTTEON) == KEY_ON); 
-					}
+
 					message_dispatcher->canData[0] = double_button;    
 					osMessagePut(task_dispatcher_quenue, (uint32_t)message_dispatcher, 0);
 					
+					//waiting for the button released
+					//if(double_button ==2) {
+					//	while(GPIO_ReadInputDataBit(WAKEUP_BANK,WAKEUP_BUTTEON) == KEY_ON); 
+					//	osDelay(2 * MS_FRAC);
+					//}					
 				}
 
-				while(GPIO_ReadInputDataBit(WAKEUP_BANK,WAKEUP_BUTTEON) == KEY_ON);  
+				//while(GPIO_ReadInputDataBit(WAKEUP_BANK,WAKEUP_BUTTEON) == KEY_ON);  
 				osSignalWait(1, osWaitForever);	
+				while(GPIO_ReadInputDataBit(WAKEUP_BANK,WAKEUP_BUTTEON) == KEY_ON);  
 				osPoolFree(task_dispatcher_pool, message_dispatcher);
+
 			
 		}
 		osDelay(10 * MS_FRAC);	
@@ -1199,6 +1376,7 @@ void TIM2_IRQHandler(void)
 	{	
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);
 		STOP_TIME;
+		
 		if(uv_private.beep_cnt){
 			//TIM2_Configuration(500);
 			GPIO_WriteBit(BUZZER_BANK, BUZZER, (BitAction)(BEEP_STATUS));		
@@ -1230,6 +1408,8 @@ void TIM2_IRQHandler(void)
 				}
 				else {
 					STOP_TIME;
+					GPIO_WriteBit(BUZZER_BANK, BUZZER, (BitAction)(BUZZER_OFF));
+					//osSignalSet(task_dispatcher_id, 1);
 				}
 			}
 		}
@@ -1292,9 +1472,12 @@ int main(void)
 	ADC1_Init();
 	uv_private.power_status = POWER_OFF;
 	uv_private.work_time = TIME_15MIN;
-	uv_private.lightness = LIGHTNESS_IDLE;
+	uv_private.lightness = LIGHTNESS_100; //LIGHTNESS_IDLE;
 	uv_private.led_light_mode = LED_LAMP_OFF;	
 	uv_private.fan_state = STOP_STATE;
+	uv_private.fan_target_speed = FAN_SPEED_HIGH;
+	uv_private.fan_cur_speed = 55000;
+
 	uv_private.uv_state = STOP_STATE;
 	uv_private.beep_freq = 500;
 	uv_private.beep_cnt = 150;

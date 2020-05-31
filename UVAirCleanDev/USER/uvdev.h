@@ -47,6 +47,10 @@
 #define LIGHTNESS100_PWM_DUTY  59900
 
 #define FAN_PWM_DUTY	50000
+#define FAN_SPEED_HIGH 0
+#define FAN_SPEED_MID  20000
+#define FAN_SPEED_SLOW   40000
+#define FAN_IDLE		 49900	
 /*
 * OUTPUT LED NUMBER
 */
@@ -62,10 +66,15 @@
 #define UV_LED    4
 #define LAMP_LED    UVAIR_LED | AIR_LED | UV_LED
 
+#if 0
 #define LIGHTNESS30_15MIN_LED    8
 #define LIGHTNESS60_30MIN_LED    0x10
-#define LIGHTNESS100_FOREVER_LED    0x20
-
+#define LIGHTNESS100_FOREVER_LED   LIGHTNESS30_15MIN_LED | LIGHTNESS60_30MIN_LED// 0x20
+#else
+#define LIGHTNESS30_15MIN_LED    1
+#define LIGHTNESS60_30MIN_LED    2
+#define LIGHTNESS100_FOREVER_LED   LIGHTNESS30_15MIN_LED | LIGHTNESS60_30MIN_LED// 0x20
+#endif
 /*
 * BUTTON AND POWER CONTROL DEFINITON
 */
@@ -180,6 +189,8 @@ struct myprivate{
 	unsigned char work_time;
 	unsigned char lightness;
 	unsigned char fan_state;
+	unsigned int fan_target_speed;
+	unsigned int fan_cur_speed;
 	unsigned char uv_state;
 	unsigned char uvdensity;
 	unsigned int beep_freq;

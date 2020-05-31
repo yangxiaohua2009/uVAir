@@ -62,7 +62,7 @@ __IO u16 ADC_ConvertedValue;
   ADC_Init(ADC1, &ADC_InitStructure);
 
   /* ADC1 regular channel11 configuration */ 
-  ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_55Cycles5); //通道1采样周期55.5个时钟周期
+  ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_239Cycles5); //通道1采样周期55.5个时钟周期
 
   /* Enable ADC1 DMA */
   ADC_DMACmd(ADC1, ENABLE);	 //使能ADC的DMA

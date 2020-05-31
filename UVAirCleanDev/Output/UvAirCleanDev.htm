@@ -3,11 +3,11 @@
 <title>Static Call Graph - [..\Output\UvAirCleanDev.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\Output\UvAirCleanDev.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Sat Apr 25 17:07:19 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Sat May 30 23:15:53 2020
 <BR><P>
-<H3>Maximum Stack Usage =        108 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        160 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; ADC1_Init &rArr; ADC1_Mode_Config &rArr; ADC_RegularChannelConfig
+task_bat_monitor
 <P>
 <H3>
 Functions with no stack information
@@ -554,7 +554,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[8a]"></a>perform</STRONG> (Thumb, 810 bytes, Stack size 40 bytes, main.o(.text))
+<P><STRONG><a name="[8a]"></a>perform</STRONG> (Thumb, 868 bytes, Stack size 40 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = perform &rArr; osMessagePut &rArr; isrMessagePut &rArr; isr_mbx_send &rArr; rt_psq_enq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSignalWait
@@ -570,7 +570,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;perform
 </UL>
 
-<P><STRONG><a name="[9b]"></a>switch_wtime_or_lightness</STRONG> (Thumb, 220 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[9b]"></a>switch_wtime_or_lightness</STRONG> (Thumb, 300 bytes, Stack size 0 bytes, main.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;task_dispatcher
 </UL>
 
@@ -578,8 +578,10 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;task_dispatcher
 </UL>
 
-<P><STRONG><a name="[61]"></a>task_bat_monitor</STRONG> (Thumb, 482 bytes, Stack size 0 bytes, main.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<P><STRONG><a name="[61]"></a>task_bat_monitor</STRONG> (Thumb, 548 bytes, Stack size 160 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = task_bat_monitor
+</UL>
+<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
@@ -596,7 +598,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[63]"></a>task_uv</STRONG> (Thumb, 158 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[63]"></a>task_uv</STRONG> (Thumb, 236 bytes, Stack size 0 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = task_uv &rArr; osSignalSet &rArr; isrSignalSet &rArr; isr_evt_set &rArr; rt_psq_enq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSignalSet
@@ -609,7 +611,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[64]"></a>task_air</STRONG> (Thumb, 238 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[64]"></a>task_air</STRONG> (Thumb, 280 bytes, Stack size 0 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = task_air &rArr; osSignalSet &rArr; isrSignalSet &rArr; isr_evt_set &rArr; rt_psq_enq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSignalSet
@@ -621,7 +623,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[65]"></a>task_buzzer</STRONG> (Thumb, 348 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[65]"></a>task_buzzer</STRONG> (Thumb, 390 bytes, Stack size 0 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = task_buzzer &rArr; osSignalSet &rArr; isrSignalSet &rArr; isr_evt_set &rArr; rt_psq_enq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSignalSet
@@ -635,8 +637,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[66]"></a>task_dispatcher</STRONG> (Thumb, 972 bytes, Stack size 16 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = task_dispatcher &rArr; perform &rArr; osMessagePut &rArr; isrMessagePut &rArr; isr_mbx_send &rArr; rt_psq_enq
+<P><STRONG><a name="[66]"></a>task_dispatcher</STRONG> (Thumb, 1360 bytes, Stack size 24 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = task_dispatcher &rArr; perform &rArr; osMessagePut &rArr; isrMessagePut &rArr; isr_mbx_send &rArr; rt_psq_enq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSignalSet
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osPoolFree
@@ -651,7 +653,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[67]"></a>task_button</STRONG> (Thumb, 442 bytes, Stack size 16 bytes, main.o(.text))
+<P><STRONG><a name="[67]"></a>task_button</STRONG> (Thumb, 426 bytes, Stack size 16 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = task_button &rArr; osMessagePut &rArr; isrMessagePut &rArr; isr_mbx_send &rArr; rt_psq_enq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSignalWait
@@ -664,7 +666,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[2a]"></a>TIM2_IRQHandler</STRONG> (Thumb, 222 bytes, Stack size 8 bytes, main.o(.text))
+<P><STRONG><a name="[2a]"></a>TIM2_IRQHandler</STRONG> (Thumb, 232 bytes, Stack size 8 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = TIM2_IRQHandler &rArr; TIM2_Configuration &rArr; TIM_DeInit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_GetITStatus
@@ -676,7 +678,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
-<P><STRONG><a name="[14]"></a>EXTI0_IRQHandler</STRONG> (Thumb, 92 bytes, Stack size 16 bytes, main.o(.text))
+<P><STRONG><a name="[14]"></a>EXTI0_IRQHandler</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = EXTI0_IRQHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -684,7 +686,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
-<P><STRONG><a name="[69]"></a>main</STRONG> (Thumb, 304 bytes, Stack size 8 bytes, main.o(.text))
+<P><STRONG><a name="[69]"></a>main</STRONG> (Thumb, 474 bytes, Stack size 8 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = main &rArr; ADC1_Init &rArr; ADC1_Mode_Config &rArr; ADC_RegularChannelConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadCreate
